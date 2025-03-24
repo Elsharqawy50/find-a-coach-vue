@@ -14,9 +14,6 @@ const authModule = {
       return state.userId
     },
     isCoach(state, _, _2, rootGetters) {
-      console.log(rootGetters['coaches/filteredCoaches'].some((coach) => coach.id === state.userId))
-      console.log(rootGetters['coaches/filteredCoaches'])
-
       return rootGetters['coaches/filteredCoaches'].some((coach) => coach.id === state.userId)
     },
     token(state) {
@@ -35,10 +32,12 @@ const authModule = {
   },
   actions: {
     async auth(context, payload) {
+      const apiKey = import.meta.env.VITE_API_key
+
       const url =
         payload.mode === 'login'
-          ? `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDwNQ0JtuTyBrPUYSOUFeJOV10S9IEghpk`
-          : `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDwNQ0JtuTyBrPUYSOUFeJOV10S9IEghpk`
+          ? `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`
+          : `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`
       try {
         const response = await axios.post(url, {
           email: payload.email,
